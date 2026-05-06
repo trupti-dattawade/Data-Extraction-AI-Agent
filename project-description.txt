@@ -1,0 +1,134 @@
+Refined project explanation (technical version)
+
+Data Extraction AI Agent is a Retrieval-Augmented Generation (RAG) pipeline designed to automatically extract structured information from PDF and Word documents and convert it into machine-readable data for downstream workflows.
+
+The system combines document processing, vector search, and LLM reasoning to enable scalable and accurate knowledge extraction.
+
+End-to-end architecture
+1) Document ingestion
+
+Supported inputs:
+
+PDFs
+DOC/DOCX files
+
+Processing includes:
+
+Text extraction (PDF parsers / OCR if scanned)
+Metadata capture (filename, timestamps, document type)
+
+Purpose: Convert binary documents into raw text.
+
+2) Chunking strategy
+
+Large documents are split into semantic chunks.
+
+Typical approach:
+
+Chunk size: 500–1000 tokens
+Overlap: 10–20%
+
+Why chunking matters:
+
+Fits LLM context limits
+Improves retrieval accuracy
+Preserves semantic continuity
+
+Output example:
+
+Doc → Sections → Paragraph chunks → Embeddings
+3) Embedding & vector storage
+
+Each chunk is converted into embeddings and stored in a vector database.
+
+This enables semantic search instead of keyword search.
+
+Stored data:
+
+Chunk text
+Embedding vector
+Document metadata
+Chunk ID & source location
+4) Retrieval layer (the “R” in RAG)
+
+When the user asks for specific information:
+
+The system:
+
+Converts query → embedding
+Performs similarity search
+Retrieves top-k relevant chunks
+
+This ensures the LLM receives grounded context from the actual document.
+
+5) LLM extraction layer (the “G” in RAG)
+
+The retrieved chunks are passed to the LLM with structured extraction prompts.
+
+The LLM performs:
+
+Information synthesis across chunks
+Field extraction
+Schema formatting
+
+Example tasks:
+
+Extract contract clauses
+Pull invoice fields
+Identify key dates, parties, amounts
+Summarize sections
+6) Structured output generation
+
+Outputs are formatted into machine-readable formats such as:
+
+JSON
+CSV
+Database records
+API payloads
+
+Example output:
+
+{
+  "document_type": "invoice",
+  "vendor": "ABC Pvt Ltd",
+  "invoice_number": "INV-2025-002",
+  "date": "2025-01-12",
+  "total_amount": 18500
+}
+Why RAG is important here
+
+Without RAG:
+
+LLM guesses
+Hallucination risk
+No traceability
+
+With RAG:
+
+Grounded in source documents
+Higher factual accuracy
+Source chunk traceability
+Scales to large document sets
+Key capabilities of your system
+
+Your agent enables:
+
+Automation
+
+Eliminates manual document reading
+Converts unstructured docs → structured datasets
+
+Analytics
+
+Data becomes queryable
+Enables dashboards and BI pipelines
+
+Knowledge management
+
+Turns document repositories into searchable knowledge bases
+
+Workflow integration
+
+CRM / ERP ingestion
+Compliance & audit pipelines
+Internal search assistants
