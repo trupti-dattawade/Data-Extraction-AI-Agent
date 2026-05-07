@@ -12,8 +12,8 @@ This project is a RAG-based system that processes PDF and Word documents to extr
 
 ## Tech Stack
 - Python
-- LangChain / LlamaIndex
-- Vector Database (FAISS / Pinecone / Chroma)
+- LangChain
+- Vector Database (FAISS)
 - OpenAI / LLM API
 
 ## How to Run
