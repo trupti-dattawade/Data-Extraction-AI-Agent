@@ -1,0 +1,79 @@
+1️⃣ dotenv + os
+from dotenv import load_dotenv
+import os
+
+Why:
+Used to securely load your GROQ_API_KEY from a .env file instead of hard-coding it. This is best practice for security.
+
+2️⃣ Document Loaders
+from langchain_community.document_loaders import PyPDFLoader, Docx2txtLoader
+
+Why:
+These convert files → readable text.
+
+PyPDFLoader → reads PDF files page by page
+Docx2txtLoader → extracts text from Word documents
+
+Agent only accepts PDF & DOCX, so this is essential.
+
+3️⃣ Text Splitter
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+
+Why:
+LLMs cannot process huge documents at once.
+This splits long text into small chunks while keeping context overlap.
+
+This step enables efficient retrieval later.
+
+4️⃣ Embeddings
+from langchain_community.embeddings import HuggingFaceEmbeddings
+
+Why:
+Transforms text chunks → numerical vectors (embeddings).
+These vectors allow semantic search (search by meaning, not keywords).
+
+Groq does not provide embeddings → so we use HuggingFace locally.
+
+5️⃣ Vector Database
+from langchain_community.vectorstores import FAISS
+
+Why:
+Stores embeddings in a searchable vector database.
+When a question comes, FAISS finds the most relevant chunks quickly.
+
+This is the Retrieval part of RAG.
+
+6️⃣ Groq LLM
+from langchain_groq import ChatGroq
+
+Why:
+This is the brain of the agent.
+It reads retrieved text and extracts structured information.
+
+This is the Generation part of RAG.
+
+7️⃣ Retrieval Chain
+from langchain.chains import RetrievalQA
+
+Why:
+Connects everything together:
+
+Takes user query
+Retrieves relevant chunks from FAISS
+Sends them to Groq LLM
+Returns the final answer
+
+This creates the full RAG pipeline.
+
+8️⃣ Pandas (optional)
+import pandas as pd
+
+Why:
+Used to convert extracted results into:
+
+CSV
+Excel
+Structured tables
+In simple pipeline form
+
+Load docs → Split → Embed → Store → Retrieve → Groq LLM → Structured Output
